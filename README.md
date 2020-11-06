@@ -1,4 +1,4 @@
-# Hardware_shop
+# Hardware shop
 Edward Aranda
 
 Mike Giraldi
