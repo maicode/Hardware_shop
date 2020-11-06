@@ -49,11 +49,12 @@ class Application:
             d=[[x,y,z]]
             df3=pd.DataFrame(d)
             df2.append(df3)
-            with pd.ExcelWriter('C:\\Users\CHR5S\Desktop\Activity.xlsx') as writer:
+	#change directory
+            #with pd.ExcelWriter('CHANGE DIRECTORY.xlsx') as writer:
                 df2.to_excel(writer)
 
         
-        df = pd.read_excel('C:\\Users\CHR5S\Desktop\Activity.xlsx')
+        #df = pd.read_excel('CHANGE DIRECTORY.xlsx')
         activityLabel = Label(a,text=df).grid(row=0,column=0)
         employee=StringVar()
         description=StringVar()
