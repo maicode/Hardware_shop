@@ -1,0 +1,303 @@
+from tkinter import *
+import pandas as pd
+
+from openpyxl.workbook import Workbook
+from openpyxl import load_workbook
+from tkinter import ttk
+
+root = Tk()
+
+
+def view():
+    result = Label(text="Hello").grid(row=4, column=3)
+
+
+class Application:
+
+
+    def Departments():
+        d = Tk()
+        d.geometry("500x500")
+        d.title('Departments')
+        
+        wb = Workbook()
+        wb = load_workbook('C:\Hardware.xlsx')
+
+        for s in range(len(wb.sheetnames)):
+            if wb.sheetnames[s] == 'Hardware':
+                break
+        wb.active = s
+        ws = (wb.active)
+
+        def set_Sheet_Hardware():
+            wb.active = 0
+            ws = (wb.active)
+            global column_a 
+            column_a= ws['A']
+            global column_b 
+            column_b= ws['B']
+            get_info()
+
+        def set_Sheet_Electrical():
+            wb.active = 1
+            ws = (wb.active)
+            global column_a 
+            column_a= ws['A']
+            global column_b 
+            column_b= ws['B']
+            get_info()
+
+        def set_Sheet_plumbing():
+            wb.active = 2
+            ws = (wb.active)
+            global column_a 
+            column_a= ws['A']
+            global column_b 
+            column_b= ws['B']
+            get_info()
+        
+
+
+        def get_info():
+            get_a()
+            get_b()
+            
+
+            label_a.place(relx=.5,rely=.2,anchor=CENTER)
+            label_b.place(relx=.7,rely=.2,anchor=CENTER)
+            
+        def get_a():
+            list =''
+            for cell in column_a:
+                
+                list = f' {list+str(cell.value)}\n'
+
+            label_a.config(text=list) 
+            for cell in column_a:
+                print(cell.value)
+
+        def get_b():
+            list =''
+            for cell in column_b:
+                list = f'{list+str(cell.value)}\n'
+
+            label_b.config(text=list)
+
+        
+        Hardware_Button = Button(d, text="View Hardware",command=set_Sheet_Hardware)
+        Hardware_Button.place(relx=.15,rely=.1,anchor=CENTER)
+        Electrical_Button = Button(d, text="View Electrial",command=set_Sheet_Electrical)
+        Electrical_Button.place(relx=.15,rely=.2,anchor=CENTER)
+        Plumbing_Button = Button(d, text="View Plumbing",command=set_Sheet_plumbing)
+        Plumbing_Button.place(relx=.15,rely=.3,anchor=CENTER)
+
+        label_a = Label(d, text="")
+        label_b = Label(d, text="")
+        
+        
+
+        
+
+    def Activity_Log():
+        a = Toplevel()
+        a.title('Activity Log')
+        a.geometry("500x500")
+
+        # Update Microsoft Excel Spreadsheet Function
+        df2 = pd.DataFrame(columns=["EmployeeID", "Description", "Time"])
+
+        def updateExcel(x, y, z):
+            d = [[x, y, z]]
+            df3 = pd.DataFrame(d)
+            df2.append(df3)
+            with pd.ExcelWriter('C:\\Activity.xlsx') as writer:
+                df2.to_excel(writer)
+
+        df = pd.read_excel('C:\\Activity.xlsx')
+        activityLabel = Label(a, text=df).grid(row=0, column=0)
+        employee = StringVar()
+        description = StringVar()
+        time = StringVar()
+        elabel = Label(a, text="Employee ID").grid(row=3, column=0)
+        dlabel = Label(a, text="Description").grid(row=4, column=0)
+        tlabel = Label(a, text="Time").grid(row=5, column=0)
+        e = Entry(a, textvariable=employee, width=20).grid(row=3, column=1)
+        d = Entry(a, textvariable=description, width=20).grid(row=4, column=1)
+        t = Entry(a, textvariable=time, width=20).grid(row=5, column=1)
+        update_button = Button(a, text="Update",
+                               command=lambda: updateExcel(employee.get(), description.get(), time.get()))
+        update_button.grid(row=6, column=0)
+
+    def Employee():
+        e = Tk()
+        e.title('Employee')
+        e.geometry("500x500")
+
+        # Customer Satisfaction Survey
+        RATINGS = [1, 2, 3, 4, 5]
+
+        def customerSatisfaction():
+            satisfaction = Tk()
+            q1 = "1. Did you find what you were looking for?"
+            q2 = "2. How would you rate our customer support?"
+            q3 = "3. How likely are you to recommend us to a friend?"
+            a1 = IntVar()
+            a2 = IntVar()
+            a3 = IntVar()
+
+            def sum(x, y, z):
+                sum = x + y + z
+                myLabel = Label(satisfaction, text=("Total:", sum)).grid(row=7, column=0)
+
+            question1 = Label(satisfaction, text=q1).grid(row=0, column=0)
+            answer1 = OptionMenu(satisfaction, a1, *RATINGS).grid(row=1, column=0)
+            question2 = Label(satisfaction, text=q2).grid(row=2, column=0)
+            answer2 = OptionMenu(satisfaction, a2, *RATINGS).grid(row=3, column=0)
+            question3 = Label(satisfaction, text=q3).grid(row=4, column=0)
+            answer3 = OptionMenu(satisfaction, a3, *RATINGS).grid(row=5, column=0)
+            btnSubmit = Button(satisfaction, text="SUBMIT", command=lambda: sum(a1.get(), a2.get(), a3.get())).grid(
+                row=6, column=0)
+
+        # Basic Home Screen Configuration
+        viewInventory = Button(e, text="View Inventory", command=Application.Departments, width=30, height=5)
+        viewInventory.place(relx=.5, rely=.2, anchor=CENTER)
+        satisfactionSurvey = Button(e, text="Customer Satisfaction Survey", command=customerSatisfaction, width=30,
+                                    height=5)
+        satisfactionSurvey.place(relx=.5, rely=.5, anchor=CENTER)
+        employeeActivity = Button(e, text="Activity Log", command=Application.Activity_Log, width=30, height=5)
+        employeeActivity.place(relx=.5, rely=.8, anchor=CENTER)
+
+    def Supervisor():
+        s = Tk()
+        s.geometry("500x500")
+        # Basic Home Screen Configuration
+        employee = Button(a, text="Employee", command=Application.Employee, width=30, height=5)
+        employee.place(relx=.5, rely=.2, anchor=CENTER)
+        departments = Button(a, text="Departments", width=30, height=5)
+        departments.place(relx=.5, rely=.5, anchor=CENTER)
+        activity = Button(a, text="Activity Log", width=30, height=5)
+        activity.place(relx=.5, rely=.8, anchor=CENTER)
+
+    def Admin():
+        a = Tk()
+        a.title('Admin')
+        a.geometry("500x500")
+
+        # Admin functions
+        def Supervisor():
+            s = Tk()
+            s.title('Edit Supervisors')
+            s.geometry("500x500")
+            view = Button(s, text="View", width=30, height=5)
+            view.place(relx=.5, rely=.2, anchor=CENTER)
+            add = Button(s, text="Add", width=30, height=5)
+            add.place(relx=.5, rely=.5, anchor=CENTER)
+            delete = Button(s, text="Delete", width=30, height=5)
+            delete.place(relx=.5, rely=.8, anchor=CENTER)
+
+        def Backup():
+            b = Tk()
+            b.title('Edit Backup')
+            b.geometry("500x500")
+            view = Button(b, text="Create", width=30, height=5)
+            view.place(relx=.5, rely=.2, anchor=CENTER)
+            add = Button(b, text="Restore", width=30, height=5)
+            add.place(relx=.5, rely=.5, anchor=CENTER)
+
+        def Employee():
+            e = Tk()
+            e.title('Edit Employees')
+            e.geometry("500x500")
+            view = Button(e, text="View", width=30, height=5)
+            view.place(relx=.5, rely=.2, anchor=CENTER)
+            add = Button(e, text="Add", width=30, height=5)
+            add.place(relx=.5, rely=.5, anchor=CENTER)
+            delete = Button(e, text="Delete", width=30, height=5)
+            delete.place(relx=.5, rely=.8, anchor=CENTER)
+
+        # Admin menu bar
+        menubar = Menu(a)
+        supervisorMenu = Menu(menubar, tearoff=0)
+        supervisorMenu.add_command(label="Supervisor", command=Supervisor)
+        menubar.add_cascade(label="Supervisor", menu=supervisorMenu)
+        backupMenu = Menu(menubar, tearoff=0)
+        backupMenu.add_command(label="Backup", command=Backup)
+        menubar.add_cascade(label="Backup", menu=backupMenu)
+        employeeMenu = Menu(menubar, tearoff=0)
+        employeeMenu.add_command(label="Employee", command=Employee)
+        menubar.add_cascade(label="Employee", menu=employeeMenu)
+        a.config(menu=menubar)
+        # Basic Home Screen Configuration
+        employee = Button(a, text="Employee", command=Application.Employee, width=30, height=5)
+        employee.place(relx=.5, rely=.2, anchor=CENTER)
+        departments = Button(a, text="Departments", command=Application.Departments, width=30, height=5)
+        departments.place(relx=.5, rely=.5, anchor=CENTER)
+        activity = Button(a, text="Activity Log", command=Application.Activity_Log, width=30, height=5)
+        activity.place(relx=.5, rely=.8, anchor=CENTER)
+
+    def __init__(self, master):
+        frame = Frame(master)
+        master.title('User Login')
+        master.geometry("500x500")
+        admins = {'admin': 'password'}
+        employees = {'admin': 'password'}
+
+        def CreateAccount():
+            c = Toplevel()
+            c.title('Create Account')
+            c.geometry("500x500")
+
+            def creates(x, y):
+                employees[x] = y
+                c.destroy()
+
+            username2 = StringVar()
+            password2 = StringVar()
+            usr_lbl = Label(c, text="Username: ")
+            usr_lbl.place(relx=.3, rely=.4, anchor=CENTER)
+            usr_text = Entry(c, textvariable=username2, width=20)
+            usr_text.place(relx=.5, rely=.4, anchor=CENTER)
+            pwd_lbl = Label(c, text="Password: ")
+            pwd_lbl.place(relx=.3, rely=.5, anchor=CENTER)
+            pwd_text = Entry(c, textvariable=password2, show="*", width=20)
+            pwd_text.place(relx=.5, rely=.5, anchor=CENTER)
+            createAccount = Button(c, text="Create Account", command=lambda: creates(username2.get(), password2.get()))
+            createAccount.place(relx=.3, rely=.6, anchor=CENTER)
+
+        def Validate(x, y):
+            if x in admins:
+                if admins[x] == y:
+                    openSesame = Label(master, text="User Login Accepted").grid(row=4, column=3)
+                    Application.Admin()
+                else:
+                    openSesame = Label(master, text="Invalid Login").grid(row=4, column=3)
+            elif x in employees:
+                if employees[x] == y:
+                    Application.Employee()
+                else:
+                    openSesame = Label(master, text="Invalid Login").grid(row=4, column=3)
+            else:
+                openSesame = Label(master, text="Invalid Login").grid(row=4, column=3)
+
+        username = StringVar()
+        password = StringVar()
+
+        usr_lbl = Label(master, text="Username: ")
+        usr_lbl.place(relx=.3, rely=.4, anchor=CENTER)
+        usr_text = Entry(master, textvariable=username, width=20)
+        usr_text.place(relx=.5, rely=.4, anchor=CENTER)
+
+        pwd_lbl = Label(master, text="Password: ")
+        pwd_lbl.place(relx=.3, rely=.5, anchor=CENTER)
+        pwd_text = Entry(master, textvariable=password, show="*", width=20)
+        pwd_text.place(relx=.5, rely=.5, anchor=CENTER)
+
+        submit = Button(master, text="Login", command=lambda: Validate(username.get(), password.get()))
+        submit.place(relx=.3, rely=.6, anchor=CENTER)
+        # Open Create Account Window
+        create = Button(master, text="Create Account", command=CreateAccount)
+        create.place(relx=.5, rely=.6, anchor=CENTER)
+
+
+app = Application(root)
+root.mainloop()
