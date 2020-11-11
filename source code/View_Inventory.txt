@@ -1,3 +1,4 @@
+
 from tkinter import *
 import pandas as pd
 
@@ -22,12 +23,6 @@ class Application:
         
         wb = Workbook()
         wb = load_workbook('C:\Hardware.xlsx')
-
-        for s in range(len(wb.sheetnames)):
-            if wb.sheetnames[s] == 'Hardware':
-                break
-        wb.active = s
-        ws = (wb.active)
 
         def set_Sheet_Hardware():
             wb.active = 0
@@ -73,8 +68,6 @@ class Application:
                 list = f' {list+str(cell.value)}\n'
 
             label_a.config(text=list) 
-            for cell in column_a:
-                print(cell.value)
 
         def get_b():
             list =''
