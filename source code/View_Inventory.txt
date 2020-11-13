@@ -85,6 +85,7 @@ class Application:
                 list = f' {list+str(cell.value)}\n'
 
             label_a.config(text=list) 
+          
 
         def get_b():
             list =''
@@ -151,17 +152,55 @@ class Application:
         e.title('Employee')
         e.geometry("500x500")
 
-        # Customer Satisfaction Survey
-        RATINGS = [1, 2, 3, 4, 5]
-
-                def test1():
-            print('Q1: ', user_Input1.get())
-            print('Q2: ', user_Input2.get())
-            print('Q3: ', user_Input3.get())
-
-
         def customerSatisfaction():
             window = Tk()
+
+            def Update_Survey():
+                global wb
+                wb = Workbook()
+                wb = load_workbook("C:\\Users\Jordan\Desktop\Project\Customer Survey.xlsx")
+
+                global ws
+                wb.active = 0
+                ws = (wb.active)
+
+                if(user_Input1.get() == 'Yes'):
+                    cell1= ws['B2']
+                    ws["B2"]= cell1.value+1
+
+
+                if(user_Input1.get()== 'No'):
+                    cell1= ws['C2']
+                    ws["C2"]= cell1.value+1
+
+
+                if(user_Input2.get()== 'Yes'):
+                    cell2= ws['B3']
+                    ws["B3"]= cell2.value+1
+
+                if(user_Input2.get()== 'No'):
+                    cell2= ws['C3']
+                    ws["C3"]= cell2.value+1
+
+
+                if(user_Input3.get()== 'Yes'):
+                    cell3= ws['B4']
+                    ws["B4"]= cell3.value+1
+
+                if(user_Input3.get()== 'No'):
+                    cell3= ws['C4']
+                    ws["C4"]= cell3.value+1
+
+                wb.save("C:\\Users\Jordan\Desktop\Project\Customer Survey.xlsx")
+                
+                # HEY EDWARD LOOK RIGHT HERE
+                # DONT INGNORE WHAT YOU CANT HANDLE
+                # LOOK AT ME BABY
+                # ASK CHRISPOFJET TO NAVIGATE BACK TO EMPLOYEE
+                # ALSO THIS CODE IS STOOOPID
+
+
+
             window.title('Customer Survey')
             window.geometry('500x500')
             ttk.Label(window, text="Did you find what you were looking for?").grid(column=0, row=5, padx=10, pady=25)
@@ -188,8 +227,9 @@ class Application:
             user_Input3.grid(column=1, row=25)
             user_Input3.current()
 
-            test = Button(window, text="Submit", command=test1)
-            test.place(relx=.5, rely=.5, anchor=CENTER)
+
+            Survey_Button = Button(window, text="Submit",command=Update_Survey)
+            Survey_Button.place(relx=.5,rely=.5,anchor=CENTER)
 
         # Basic Home Screen Configuration
         viewInventory = Button(e, text="View Inventory", command=Application.Departments, width=30, height=5)
