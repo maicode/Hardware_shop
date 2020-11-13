@@ -154,27 +154,42 @@ class Application:
         # Customer Satisfaction Survey
         RATINGS = [1, 2, 3, 4, 5]
 
+                def test1():
+            print('Q1: ', user_Input1.get())
+            print('Q2: ', user_Input2.get())
+            print('Q3: ', user_Input3.get())
+
+
         def customerSatisfaction():
-            satisfaction = Tk()
-            q1 = "1. Did you find what you were looking for?"
-            q2 = "2. How would you rate our customer support?"
-            q3 = "3. How likely are you to recommend us to a friend?"
-            a1 = IntVar()
-            a2 = IntVar()
-            a3 = IntVar()
+            window = Tk()
+            window.title('Customer Survey')
+            window.geometry('500x500')
+            ttk.Label(window, text="Did you find what you were looking for?").grid(column=0, row=5, padx=10, pady=25)
+            ttk.Label(window, text="Did you enjoy your visit today?").grid(column=0, row=15, padx=10, pady=25)
+            ttk.Label(window, text="Would you recommend us to a friend?").grid(column=0, row=25, padx=10, pady=25)
+            global user_Input1
+            global user_Input2
+            global user_Input3
+            user_Choice1= StringVar()
+            user_Choice2 = StringVar()
+            user_Choice3 = StringVar()
+            user_Input1 = ttk.Combobox(window, width=27, textvariable=user_Choice1)
+            user_Input1['values'] = ('Yes', 'No')
+            user_Input1.grid(column=1, row=5)
+            user_Input1.current()
 
-            def sum(x, y, z):
-                sum = x + y + z
-                myLabel = Label(satisfaction, text=("Total:", sum)).grid(row=7, column=0)
+            user_Input2 = ttk.Combobox(window, width=27, textvariable=user_Choice2)
+            user_Input2['values'] = ('Yes', 'No')
+            user_Input2.grid(column=1, row=15)
+            user_Input2.current()
 
-            question1 = Label(satisfaction, text=q1).grid(row=0, column=0)
-            answer1 = OptionMenu(satisfaction, a1, *RATINGS).grid(row=1, column=0)
-            question2 = Label(satisfaction, text=q2).grid(row=2, column=0)
-            answer2 = OptionMenu(satisfaction, a2, *RATINGS).grid(row=3, column=0)
-            question3 = Label(satisfaction, text=q3).grid(row=4, column=0)
-            answer3 = OptionMenu(satisfaction, a3, *RATINGS).grid(row=5, column=0)
-            btnSubmit = Button(satisfaction, text="SUBMIT", command=lambda: sum(a1.get(), a2.get(), a3.get())).grid(
-                row=6, column=0)
+            user_Input3 = ttk.Combobox(window, width=27, textvariable=user_Choice3)
+            user_Input3['values'] = ('Yes', 'No')
+            user_Input3.grid(column=1, row=25)
+            user_Input3.current()
+
+            test = Button(window, text="Submit", command=test1)
+            test.place(relx=.5, rely=.5, anchor=CENTER)
 
         # Basic Home Screen Configuration
         viewInventory = Button(e, text="View Inventory", command=Application.Departments, width=30, height=5)
