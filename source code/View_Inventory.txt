@@ -1,4 +1,3 @@
-
 from tkinter import *
 import pandas as pd
 
@@ -22,7 +21,7 @@ class Application:
         d.title('Departments')
         
         wb = Workbook()
-        wb = load_workbook('C:\Hardware.xlsx')
+        wb = load_workbook("C:\\Users\Jordan\Desktop\Project\Hardware.xlsx")
 
         def set_Sheet_Hardware():
             wb.active = 0
@@ -44,6 +43,24 @@ class Application:
 
         def set_Sheet_plumbing():
             wb.active = 2
+            ws = (wb.active)
+            global column_a 
+            column_a= ws['A']
+            global column_b 
+            column_b= ws['B']
+            get_info()
+
+        def set_Sheet_Flooring():
+            wb.active = 3
+            ws = (wb.active)
+            global column_a 
+            column_a= ws['A']
+            global column_b 
+            column_b= ws['B']
+            get_info()
+
+        def set_Sheet_Lumber():
+            wb.active = 4
             ws = (wb.active)
             global column_a 
             column_a= ws['A']
@@ -79,10 +96,18 @@ class Application:
         
         Hardware_Button = Button(d, text="View Hardware",command=set_Sheet_Hardware)
         Hardware_Button.place(relx=.15,rely=.1,anchor=CENTER)
+
         Electrical_Button = Button(d, text="View Electrial",command=set_Sheet_Electrical)
         Electrical_Button.place(relx=.15,rely=.2,anchor=CENTER)
+
         Plumbing_Button = Button(d, text="View Plumbing",command=set_Sheet_plumbing)
         Plumbing_Button.place(relx=.15,rely=.3,anchor=CENTER)
+
+        Flooring_Button = Button(d, text="View Flooring",command=set_Sheet_Flooring)
+        Flooring_Button.place(relx=.15,rely=.4,anchor=CENTER)
+
+        Lumber_Button = Button(d, text="View Lumber",command=set_Sheet_Lumber)
+        Lumber_Button.place(relx=.15,rely=.5,anchor=CENTER)
 
         label_a = Label(d, text="")
         label_b = Label(d, text="")
@@ -103,10 +128,10 @@ class Application:
             d = [[x, y, z]]
             df3 = pd.DataFrame(d)
             df2.append(df3)
-            with pd.ExcelWriter('C:\\Activity.xlsx') as writer:
+            with pd.ExcelWriter("C:\\Users\Jordan\Desktop\Project\Activity.xlsx") as writer:
                 df2.to_excel(writer)
 
-        df = pd.read_excel('C:\\Activity.xlsx')
+        df = pd.read_excel("C:\\Users\Jordan\Desktop\Project\Activity.xlsx")
         activityLabel = Label(a, text=df).grid(row=0, column=0)
         employee = StringVar()
         description = StringVar()
