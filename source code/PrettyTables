@@ -1,0 +1,64 @@
+from tkinter import Scale, Tk, Frame, Label, Button
+from tkinter.ttk import Notebook,Entry
+
+# These will be the function parameters
+#department = 'Hardware'
+#path ="HardwareNEW.xlsx"
+
+# By default, department is 'None'. 
+# Department will only need to be filled out if the table is made for inventory.
+def table(path, department=None):
+
+    df=pd.read_excel(path, converters={'ID': lambda x: str(x)})
+
+    if "Hardware" in path:
+        df = df[df['Department']==department]
+
+    if 'Visible' in df.columns:
+        df = df[df['Visible']==True]
+        df = df.drop(['Visible'], axis=1)
+    
+   # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+    window=Tk()
+    window.title("Scale,Tabs,Table Example")
+    window.geometry("600x400")
+
+    frame2=Frame(window)
+    frame2.pack(fill="both")
+
+    tablayout=Notebook(frame2)
+
+    #tab1
+    tab1=Frame(tablayout)
+    tab1.pack(fill="both")
+
+    #input box Table
+    for row in range(df.shape[0] + 1):
+        for column in range(df.shape[1]):
+            if row==0:
+                label = Label(tab1, text=df.columns.values[column], bg="cyan", fg="black")
+                label.config(font=('Arial bold',10))
+                label.grid(row=row, column=column, sticky="nsew", padx=1, pady=1)
+                tab1.grid_columnconfigure(column, weight=1)
+            else:
+                label=Label(tab1, text=df.iloc[row-1, column], bg="white", fg="black")
+                label.grid(row=row,column=column,sticky="nsew",padx=1,pady=1)
+                tab1.grid_columnconfigure(column,weight=1)
+
+    tablayout.pack(fill="both")
+
+    window.mainloop()
+  
+# You'd call it like this
+'''
+department = 'Plumbing'
+path = "Hardware.xlsx"
+
+table(path, department)
+'''
+
+# ...or like this
+'''
+table('Customer Survey.xlsx')
+'''
